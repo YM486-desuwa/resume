@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>叶茂 · 个人简历</title>
+    <!-- Google Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <style>
+        /* ===== 全局重置 & 变量 ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #000;
+            --glass-bg: rgba(18, 22, 33, 0.55);
+            --glass-border: rgba(255, 255, 255, 0.07);
+            --text-primary: #f0f8ff;
+            --text-secondary: #d0e4ff;
+            --text-muted: #8899bb;
+            --accent: #4a8cff;
+            --accent-glow: rgba(74, 140, 255, 0.35);
+            --card-bg: rgba(30, 40, 60, 0.25);
+            --radius: 24px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: 'Segoe UI', 'Roboto', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        /* ===== 粒子画布 ===== */
+        #canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ===== 滚动条 ===== */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 10px;
+        }
+
+        /* ===== 容器 ===== */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1040px;
+            margin: 2rem auto;
+            background: var(--glass-bg);
+            border-radius: var(--radius);
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            padding: 2.8rem 3rem;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid var(--glass-border);
+            transition: all var(--transition);
+        }
+
+        /* ===== 顶部导航 ===== */
+        .nav-top {
+            text-align: right;
+            margin-bottom: 1.2rem;
+        }
+        .nav-top a {
+            color: rgba(255, 255, 255, 0.4);
+            text-decoration: none;
+            font-size: 2.2rem;
+            display: inline-block;
+            transition: all var(--transition);
+            padding: 4px 8px;
+            border-radius: 50%;
+        }
+        .nav-top a:hover {
+            color: #fff;
+            transform: translateY(2px);
+            text-shadow: 0 0 30px var(--accent-glow), 0 0 60px rgba(74, 140, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* ===== Hero (左图右文) ===== */
+        .hero {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+            padding: 1.2rem 0 2.2rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            position: relative;
+            flex-wrap: wrap;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            border-radius: 10px;
+            opacity: 0.6;
+        }
+        .hero-avatar {
+            flex-shrink: 0;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 40px var(--accent-glow), 0 0 80px rgba(74, 140, 255, 0.1);
+            transition: all var(--transition);
+            position: relative;
+        }
+        .hero-avatar:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 60px var(--accent-glow), 0 0 120px rgba(74, 140, 255, 0.15);
+            transform: scale(1.02);
+        }
+        .hero-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .hero-text {
+            flex: 1;
+            min-width: 200px;
+        }
+        .hero-text h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #fff;
+            text-shadow: 0 0 40px var(--accent-glow), 0 2px 20px rgba(0, 0, 0, 0.9);
+            animation: heroFade 0.8s ease-out;
+        }
+        .hero-text h1 .wave {
+            display: inline-block;
+            animation: wave 2.5s infinite;
+            transform-origin: 70% 70%;
+        }
+        @keyframes wave {
+            0%,
+            100% {
+                transform: rotate(0deg);
+            }
+            10% {
+                transform: rotate(14deg);
+            }
+            20% {
+                transform: rotate(-8deg);
+            }
+            30% {
+                transform: rotate(14deg);
+            }
+            40% {
+                transform: rotate(-4deg);
+            }
+            50% {
+                transform: rotate(10deg);
+            }
+            60%,
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+        @keyframes heroFade {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-text .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-top: 0.1rem;
+            font-weight: 300;
+            text-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+            letter-spacing: 0.5px;
+        }
+        .hero-text .tagline {
+            margin-top: 0.6rem;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            background: rgba(40, 60, 100, 0.25);
+            display: inline-block;
+            padding: 0.4rem 2rem;
+            border-radius: 40px;
+            border: 1px solid rgba(100, 180, 255, 0.12);
+            backdrop-filter: blur(2px);
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+            letter-spacing: 0.3px;
+            transition: all var(--transition);
+        }
+        .hero-text .tagline:hover {
+            border-color: rgba(100, 180, 255, 0.3);
+            background: rgba(40, 60, 100, 0.35);
+            box-shadow: 0 0 30px var(--accent-glow);
+        }
+
+        /* ===== 通用标题 ===== */
+        .section-title {
+            font-size: 1.7rem;
+            font-weight: 600;
+            margin: 2.6rem 0 1.4rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-primary);
+            text-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+            position: relative;
+        }
+        .section-title .material-icons {
+            font-size: 1.8rem;
+            color: var(--accent);
+            filter: drop-shadow(0 0 12px var(--accent-glow));
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: var(--accent);
+            border-radius: 10px;
+            opacity: 0.5;
+        }
+
+        /* ===== About ===== */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem 2.5rem;
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 1.8rem 2.2rem;
+            margin-top: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(2px);
+            transition: all var(--transition);
+        }
+        .about-grid:hover {
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+        .about-grid .part h3 {
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-shadow: 0 0 12px rgba(0, 0, 0, 0.7);
+        }
+        .about-grid .part h3 .material-icons {
+            font-size: 1.2rem;
+            color: var(--accent);
+        }
+        .about-grid .part ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .about-grid .part ul li {
+            padding: 0.3rem 0;
+            color: var(--text-secondary);
+            font-size: 0.96rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.035);
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .about-grid .part ul li:last-child {
+            border-bottom: none;
+        }
+        .about-grid .part ul li span {
+            background: rgba(60, 100, 180, 0.2);
+            padding: 0.05rem 0.7rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: #b0d0ff;
+            border: 1px solid rgba(100, 180, 255, 0.08);
+            white-space: nowrap;
+            text-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+            font-weight: 500;
+        }
+
+        /* ===== 时间线 (Experience) ===== */
+        .timeline-item {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem 2rem;
+            padding: 1.4rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all var(--transition);
+            border-radius: 12px;
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+            align-items: flex-start;
+        }
+        .timeline-item:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .timeline-item:last-child {
+            border-bottom: none;
+        }
+        .timeline-date {
+            min-width: 160px;
+            font-weight: 600;
+            color: var(--accent);
+            font-size: 0.95rem;
+            text-shadow: 0 0 20px var(--accent-glow), 0 2px 8px rgba(0, 0, 0, 0.8);
+            letter-spacing: 0.3px;
+        }
+        .timeline-content {
+            flex: 1;
+        }
+        .timeline-content .title {
+            font-weight: 600;
+            font-size: 1.12rem;
+            color: var(--text-primary);
+            text-shadow: 0 0 16px rgba(0, 0, 0, 0.8);
+        }
+        .timeline-content .org {
+            color: #b8ccf0;
+            font-size: 0.95rem;
+            margin: 0.05rem 0 0.3rem 0;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .timeline-content .desc {
+            color: var(--text-secondary);
+            font-size: 0.96rem;
+            margin-top: 0.2rem;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .timeline-content .sub-list {
+            list-style: none;
+            padding-left: 0.2rem;
+            margin-top: 0.4rem;
+        }
+        .timeline-content .sub-list li {
+            font-size: 0.93rem;
+            color: var(--text-secondary);
+            padding: 0.15rem 0;
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .timeline-content .sub-list li::before {
+            content: "▹";
+            color: var(--accent);
+            font-size: 0.9rem;
+            filter: drop-shadow(0 0 8px var(--accent-glow));
+        }
+        .timeline-img {
+            margin-top: 0.5rem;
+            max-width: 260px;
+            width: 100%;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            transition: all var(--transition);
+            display: block;
+        }
+        .timeline-img:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6), 0 0 30px var(--accent-glow);
+            transform: scale(1.01);
+        }
+        .accomplishment {
+            background: rgba(40, 80, 160, 0.2);
+            border-radius: 30px;
+            padding: 0.1rem 1rem;
+            display: inline-block;
+            font-size: 0.82rem;
+            margin: 0.25rem 0.2rem 0.2rem 0;
+            color: #b8d0f8;
+            border: 1px solid rgba(100, 180, 255, 0.06);
+            text-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+            transition: all var(--transition);
+        }
+        .accomplishment:hover {
+            border-color: rgba(100, 180, 255, 0.2);
+            background: rgba(40, 80, 160, 0.35);
+        }
+
+        /* ===== 技能 ===== */
+        .skills-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.8rem 3rem;
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 1.8rem 2.2rem;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(2px);
+            transition: all var(--transition);
+        }
+        .skills-wrapper:hover {
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+        .skill-group h4 {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0.9rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.3px;
+            text-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
+        }
+        .skill-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 0.6rem;
+        }
+        .skill-row .skill-label {
+            min-width: 110px;
+            font-size: 0.9rem;
+            color: #c0d4f0;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .skill-row .bar-bg {
+            flex: 1;
+            height: 6px;
+            background: rgba(60, 80, 120, 0.25);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+        .skill-row .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2a6bd5, var(--accent), #6db3f2);
+            border-radius: 10px;
+            width: 0%;
+            box-shadow: 0 0 24px var(--accent-glow), 0 0 60px rgba(74, 140, 255, 0.1);
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        .skill-row .bar-fill::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 20px;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.3), transparent);
+            border-radius: 10px;
+        }
+        .skill-row .skill-percent {
+            min-width: 38px;
+            font-size: 0.78rem;
+            color: #a8c0e8;
+            text-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+            text-align: right;
+            font-weight: 500;
+        }
+
+        /* ===== 项目卡片 ===== */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
+        }
+        .project-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 1.3rem 1.5rem;
+            transition: all var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(2px);
+            cursor: default;
+            display: flex;
+            flex-direction: column;
+        }
+        .project-card:hover {
+            background: rgba(40, 60, 100, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), 0 0 40px var(--accent-glow);
+            border-color: rgba(100, 180, 255, 0.1);
+        }
+        .project-card h4 {
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: var(--text-primary);
+            text-shadow: 0 0 14px rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .project-card h4 .material-icons {
+            font-size: 1.2rem;
+            color: var(--accent);
+        }
+        .project-card p {
+            font-size: 0.92rem;
+            color: var(--text-secondary);
+            margin-top: 0.2rem;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+            flex: 1;
+        }
+        .project-card .tech-tag {
+            display: inline-block;
+            background: rgba(60, 100, 180, 0.12);
+            border-radius: 30px;
+            padding: 0.05rem 0.9rem;
+            font-size: 0.72rem;
+            color: #b8d0f8;
+            margin: 0.4rem 0.2rem 0 0;
+            border: 1px solid rgba(100, 180, 255, 0.05);
+            text-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+            transition: all var(--transition);
+        }
+        .project-card .tech-tag:hover {
+            background: rgba(60, 100, 180, 0.25);
+            border-color: rgba(100, 180, 255, 0.15);
+        }
+        .project-card .project-img {
+            width: 100%;
+            max-height: 160px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-top: 0.6rem;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+            transition: all var(--transition);
+        }
+        .project-card .project-img:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+        }
+        .project-card .meta-tag {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.04);
+            padding: 0.1rem 0.6rem;
+            border-radius: 12px;
+            display: inline-block;
+            margin-top: 0.3rem;
+            align-self: flex-start;
+        }
+
+        /* ===== 教育 ===== */
+        .edu-item {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem 2rem;
+            padding: 0.9rem 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            transition: all var(--transition);
+        }
+        .edu-item:hover {
+            background: rgba(255, 255, 255, 0.015);
+        }
+        .edu-item:last-child {
+            border-bottom: none;
+        }
+        .edu-date {
+            min-width: 150px;
+            font-weight: 600;
+            color: var(--accent);
+            font-size: 0.95rem;
+            text-shadow: 0 0 20px var(--accent-glow), 0 2px 8px rgba(0, 0, 0, 0.8);
+        }
+        .edu-content .edu-title {
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: var(--text-primary);
+            text-shadow: 0 0 14px rgba(0, 0, 0, 0.7);
+        }
+        .edu-content .edu-meta {
+            color: #b8ccf0;
+            font-size: 0.92rem;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+        }
+        .edu-content .edu-desc {
+            font-size: 0.92rem;
+            color: var(--text-secondary);
+            margin-top: 0.1rem;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+        }
+        .edu-content .edu-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all var(--transition);
+            text-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 0.2rem;
+        }
+        .edu-content .edu-link:hover {
+            color: #b8d8ff;
+            text-shadow: 0 0 30px var(--accent-glow);
+            transform: translateX(4px);
+        }
+        .edu-content .edu-link .material-icons {
+            font-size: 1rem;
+        }
+
+        /* ===== 联系方式 (Contact) ===== */
+        .contact-section {
+            margin-top: 2.8rem;
+            padding-top: 1.8rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .contact-section .section-title {
+            margin-top: 0;
+        }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.2rem;
+            margin-top: 0.5rem;
+        }
+        .contact-item {
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 1rem 1.2rem;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.2);
+            transition: all var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            backdrop-filter: blur(2px);
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+        .contact-item:hover {
+            background: rgba(40, 60, 100, 0.3);
+            border-color: rgba(100, 180, 255, 0.12);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), 0 0 30px var(--accent-glow);
+        }
+        .contact-item .material-icons {
+            font-size: 1.8rem;
+            color: var(--accent);
+            filter: drop-shadow(0 0 12px var(--accent-glow));
+            flex-shrink: 0;
+        }
+        .contact-item .contact-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .contact-item .contact-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+        }
+        .contact-item .contact-value {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            text-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
+            word-break: break-all;
+        }
+
+        /* ===== 页脚 ===== */
+        .footer {
+            margin-top: 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            padding-top: 1.8rem;
+            text-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
+            letter-spacing: 0.5px;
+        }
+        .footer span {
+            color: var(--accent);
+            opacity: 0.7;
+        }
+
+        /* ===== 滚动进入动画 ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== 响应式 ===== */
+        @media (max-width: 820px) {
+            .container {
+                padding: 1.8rem 1.5rem;
+                margin: 1.2rem 0.8rem;
+                border-radius: 20px;
+                background: rgba(16, 20, 30, 0.6);
+            }
+            .hero {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 1.2rem;
+            }
+            .hero-avatar {
+                width: 120px;
+                height: 120px;
+            }
+            .hero-text h1 {
+                font-size: 2.2rem;
+            }
+            .hero-text .subtitle {
+                font-size: 1rem;
+            }
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                padding: 1.2rem 1.4rem;
+            }
+            .skills-wrapper {
+                grid-template-columns: 1fr;
+                gap: 1.2rem;
+                padding: 1.2rem 1.4rem;
+            }
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            .timeline-date {
+                min-width: 120px;
+            }
+            .edu-date {
+                min-width: 120px;
+            }
+            .skill-row .skill-label {
+                min-width: 80px;
+                font-size: 0.85rem;
+            }
+            .section-title {
+                font-size: 1.4rem;
+                margin-top: 2rem;
+            }
+            .contact-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.8rem;
+            }
+            .timeline-img {
+                max-width: 200px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 1.2rem 0.8rem;
+                border-radius: 16px;
+                margin: 0.6rem 0.4rem;
+                background: rgba(16, 20, 30, 0.65);
+            }
+            .hero-avatar {
+                width: 100px;
+                height: 100px;
+            }
+            .hero-text h1 {
+                font-size: 1.8rem;
+            }
+            .hero-text .subtitle {
+                font-size: 0.95rem;
+            }
+            .hero-text .tagline {
+                font-size: 0.8rem;
+                padding: 0.3rem 1.2rem;
+            }
+            .about-grid {
+                padding: 0.8rem 0.8rem;
+            }
+            .skills-wrapper {
+                padding: 0.8rem 0.8rem;
+            }
+            .project-card {
+                padding: 1rem 1rem;
+            }
+            .timeline-item {
+                padding: 0.8rem 0;
+            }
+            .timeline-date {
+                min-width: 100px;
+                font-size: 0.85rem;
+            }
+            .edu-date {
+                min-width: 100px;
+                font-size: 0.85rem;
+            }
+            .section-title {
+                font-size: 1.2rem;
+                margin-top: 1.6rem;
+            }
+            .section-title .material-icons {
+                font-size: 1.4rem;
+            }
+            .nav-top a {
+                font-size: 1.6rem;
+            }
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 0.6rem;
+            }
+            .contact-item {
+                padding: 0.7rem 1rem;
+            }
+            .timeline-img {
+                max-width: 100%;
+            }
+        }
+
+        /* ===== 打印样式 ===== */
+        @media print {
+            #canvas {
+                display: none !important;
+            }
+            .container {
+                background: #fff !important;
+                color: #222 !important;
+                backdrop-filter: none !important;
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+            }
+            .hero-avatar {
+                border-color: #ccc !important;
+                box-shadow: none !important;
+            }
+            .hero-text h1,
+            .hero-text .subtitle,
+            .hero-text .tagline,
+            .section-title,
+            .about-grid .part h3,
+            .about-grid .part ul li,
+            .timeline-content .title,
+            .timeline-content .org,
+            .timeline-content .desc,
+            .timeline-content .sub-list li,
+            .skill-group h4,
+            .skill-row .skill-label,
+            .skill-row .skill-percent,
+            .project-card h4,
+            .project-card p,
+            .edu-content .edu-title,
+            .edu-content .edu-meta,
+            .edu-content .edu-desc,
+            .contact-item .contact-value,
+            .contact-item .contact-label,
+            .footer {
+                color: #222 !important;
+                text-shadow: none !important;
+            }
+            .about-grid,
+            .skills-wrapper,
+            .project-card,
+            .contact-item {
+                background: #f5f5f5 !important;
+                border-color: #ddd !important;
+                box-shadow: none !important;
+            }
+            .skill-row .bar-bg {
+                background: #e0e0e0 !important;
+            }
+            .skill-row .bar-fill {
+                background: #4a8cff !important;
+                box-shadow: none !important;
+            }
+            .timeline-item,
+            .edu-item {
+                border-bottom-color: #ddd !important;
+            }
+            .nav-top {
+                display: none !important;
+            }
+            .accomplishment {
+                background: #e8eef8 !important;
+                color: #222 !important;
+                border-color: #ccc !important;
+            }
+            .edu-content .edu-link {
+                color: #4a8cff !important;
+            }
+            .section-title::after {
+                background: #4a8cff !important;
+            }
+            .hero::after {
+                background: #4a8cff !important;
+            }
+            .hero-text h1 .wave {
+                animation: none !important;
+            }
+            .contact-item .material-icons {
+                color: #4a8cff !important;
+                filter: none !important;
+            }
+            .timeline-img {
+                border-color: #ddd !important;
+                box-shadow: none !important;
+            }
+            .project-card .project-img {
+                border-color: #ddd !important;
+                box-shadow: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== 粒子画布 ===== -->
+    <canvas id="canvas"></canvas>
+
+    <!-- ===== 简历内容 ===== -->
+    <div class="container">
+
+        <!-- 顶部导航 -->
+        <div class="nav-top">
+            <a href="#about" aria-label="滚动到关于我">
+                <span class="material-icons">keyboard_arrow_down</span>
+            </a>
+        </div>
+
+        <!-- ===== HERO (左图右文) ===== -->
+        <header class="hero" id="top">
+            <div class="hero-avatar">
+                <img src="tx.jpg" alt="叶茂 大头照" loading="lazy" />
+            </div>
+            <div class="hero-text">
+                <h1><span class="wave">👋</span> 你好，我是叶茂</h1>
+                <p class="subtitle">来自宿迁沭阳 · 准大一 · 通信工程</p>
+                <span class="tagline">耐心 · 细致 · 乐于分享</span>
+            </div>
+        </header>
+
+        <!-- ===== ABOUT ===== -->
+        <section id="about">
+            <h2 class="section-title reveal">
+                <span class="material-icons">person</span> 关于我
+            </h2>
+            <div class="about-grid reveal">
+                <div class="part">
+                    <h3><span class="material-icons">school</span> 学生 · 准大一</h3>
+                    <ul>
+                        <li>南京工程学院 · 通信工程 <span>2026级</span></li>
+                        <li>高中理科强项 · 物理 / 数学</li>
+                        <li>来自江苏省宿迁市沭阳县</li>
+                    </ul>
+                    <h3 style="margin-top: 1.2rem;"><span class="material-icons">favorite</span> 兴趣与特质</h3>
+                    <ul>
+                        <li>逻辑思维清晰</li>
+                        <li>善于沟通与讲解</li>
+                        <li>热爱羽毛球运动</li>
+                    </ul>
+                </div>
+                <div class="part">
+                    <h3><span class="material-icons">trending_up</span> 自我评估</h3>
+                    <ul>
+                        <li>学习能力 <span>90'</span></li>
+                        <li>耐心与责任心 <span>92'</span></li>
+                        <li>表达与沟通 <span>85'</span></li>
+                        <li>团队协作 <span>80'</span></li>
+                        <li>抗压能力 <span>78'</span></li>
+                    </ul>
+                    <h3 style="margin-top: 1.2rem;"><span class="material-icons">verified</span> 语言 &amp; 证书</h3>
+                    <ul>
+                        <li>普通话 (二级甲等) <span>87分</span></li>
+                        <li>英语 CET-4 <span>备考中</span></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== EXPERIENCE ===== -->
+        <section id="experience">
+            <h2 class="section-title reveal">
+                <span class="material-icons">work</span> 实践经历
+            </h2>
+
+            <!-- 家教经历 + jin.jpg -->
+            <div class="timeline-item reveal">
+                <div class="timeline-date">2025年7月 – 2025年8月</div>
+                <div class="timeline-content">
+                    <div class="title">初中数学 / 物理 家教</div>
+                    <div class="org">个人 · 宿迁</div>
+                    <div class="desc">
+                        为一名初三学生提供数学和物理的暑期辅导，为期一个月，共授课20余次。
+                    </div>
+                    <ul class="sub-list">
+                        <li>根据学生薄弱点制定个性化复习计划，重点突破函数与力学模块</li>
+                        <li>通过典型例题讲解和错题复盘，帮助学生提升解题思路</li>
+                        <li>定期与家长沟通学习进度，获得家长一致好评</li>
+                    </ul>
+                    <img src="jin.jpg" alt="家教副证" class="timeline-img" loading="lazy" />
+                    <div style="margin-top: 0.5rem;">
+                        <span class="accomplishment">📈 学生月考成绩提升20分</span>
+                        <span class="accomplishment">👍 家长满意度 100%</span>
+                        <span class="accomplishment">⏳ 累计辅导 30+ 小时</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 暑期社会实践 + sx.jpg -->
+            <div class="timeline-item reveal">
+                <div class="timeline-date">2025年8月</div>
+                <div class="timeline-content">
+                    <div class="title">暑期社会实践 · 社区课业辅导</div>
+                    <div class="org">社区志愿服务 · 宿迁</div>
+                    <div class="desc">
+                        参与社区组织的青少年暑期课业辅导活动，为社区中小学生提供作业答疑和课程辅导。
+                    </div>
+                    <ul class="sub-list">
+                        <li>负责数学和英语科目的答疑，累计辅导学生12人</li>
+                        <li>协助组织课外阅读分享会，激发学生阅读兴趣</li>
+                        <li>获得社区优秀志愿者称号</li>
+                    </ul>
+                    <img src="sx.jpg" alt="暑期社会实践证明" class="timeline-img" loading="lazy" />
+                    <div style="margin-top: 0.5rem;">
+                        <span class="accomplishment">👥 辅导学生 12 人</span>
+                        <span class="accomplishment">🏅 优秀志愿者</span>
+                        <span class="accomplishment">📚 累计服务 40+ 小时</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== PROJECTS ===== -->
+        <section id="projects">
+            <h2 class="section-title reveal">
+                <span class="material-icons">folder</span> 项目 &amp; 活动
+            </h2>
+            <div class="projects-grid">
+                <!-- 活动标志 + logo.jpg -->
+                <div class="project-card reveal">
+                    <h4><span class="material-icons">emoji_events</span> 校园科技节活动</h4>
+                    <p>作为班级代表参与校园科技节，负责物理实验演示与讲解，活动获得师生好评。</p>
+                    <img src="logo.jpg" alt="活动标志" class="project-img" loading="lazy" />
+                    <span class="tech-tag">活动策划</span>
+                    <span class="tech-tag">物理演示</span>
+                </div>
+
+                <!-- ===== 替换为 AI 技能认证，zs.jpg 作为辅助材料 ===== -->
+                <div class="project-card reveal">
+                    <h4><span class="material-icons">auto_awesome</span> AI 技能认证</h4>
+                    <p>完成人工智能基础与应用课程，获得官方认证，涵盖机器学习、神经网络及提示工程，具备AI模型理解与初步开发能力。</p>
+                    <!-- 辅助材料标签 + zs.jpg -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.3rem;">
+                        <span class="tech-tag" style="margin:0;">AI 认证</span>
+                        <span class="meta-tag">📎 辅助材料</span>
+                    </div>
+                    <img src="zs.jpg" alt="AI证书辅助材料" class="project-img" loading="lazy" />
+                    <span class="tech-tag">机器学习</span>
+                    <span class="tech-tag">提示工程</span>
+                </div>
+
+                <!-- 原有项目：学习笔记 -->
+                <div class="project-card reveal">
+                    <h4><span class="material-icons">menu_book</span> 个人学习笔记分享</h4>
+                    <p>将高中数学、物理笔记整理成电子版，分享给班级同学，获广泛使用。</p>
+                    <span class="tech-tag">笔记整理</span>
+                    <span class="tech-tag">知识共享</span>
+                </div>
+                <!-- 原有项目：羽毛球 -->
+                <div class="project-card reveal">
+                    <h4><span class="material-icons">sports_tennis</span> 班级羽毛球活动组织</h4>
+                    <p>作为班级体育委员，组织班级羽毛球友谊赛，促进同学交流。</p>
+                    <span class="tech-tag">团队协调</span>
+                    <span class="tech-tag">活动策划</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SKILLS ===== -->
+        <section id="skills">
+            <h2 class="section-title reveal">
+                <span class="material-icons">graphic_eq</span> 技能
+            </h2>
+            <div class="skills-wrapper reveal">
+                <div class="skill-group">
+                    <h4>学科基础</h4>
+                    <div class="skill-row">
+                        <span class="skill-label">数学 (高中)</span>
+                        <div class="bar-bg"><div class="bar-fill" style="width:90%"></div></div>
+                        <span class="skill-percent">90%</span>
+                    </div>
+                    <div class="skill-row">
+                        <span class="skill-label">物理 (高中)</span>
+                        <div class="bar-bg"><div class="bar-fill" style="width:85%"></div></div>
+                        <span class="skill-percent">85%</span>
+                    </div>
+                    <div class="skill-row">
+                        <span class="skill-label">英语 (阅读/写作)</span>
+                        <div class="bar-bg"><div class="bar-fill" style="width:75%"></div></div>
+                        <span class="skill-percent">75%</span>
+                    </div>
+                </div>
+                <div class="skill-group">
+                    <h4>办公软件</h4>
+                    <div class="skill-row">
+                        <span class="skill-label">Word / Excel / PPT</span>
+                        <div class="bar-bg"><div class="bar-fill" style="width:80%"></div></div>
+                        <span class="skill-percent">80%</span>
+                    </div>
+                    <div class="skill-row">
+                        <span class="skill-label">思维导图 / 笔记</span>
+                        <div class="bar-bg"><div class="bar-fill" style="width:70%"></div></div>
+                        <span class="skill-percent">70%</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== EDUCATION ===== -->
+        <section id="education">
+            <h2 class="section-title reveal">
+                <span class="material-icons">school</span> 教育
+            </h2>
+
+            <div class="edu-item reveal">
+                <div class="edu-date">2026年9月 – 2030年6月</div>
+                <div class="edu-content">
+                    <div class="edu-title">本科 · 通信工程</div>
+                    <div class="edu-meta">南京工程学院 · 通信与信息工程学院 · 南京</div>
+                    <div class="edu-desc">江苏省属重点高校，以工科应用为特色。即将入学，期待深入钻研信号处理、无线通信等领域。</div>
+                    <a href="https://www.njit.edu.cn/" target="_blank" class="edu-link">
+                        南京工程学院官网 <span class="material-icons" style="font-size:1rem;">open_in_new</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="edu-item reveal">
+                <div class="edu-date">2020年9月 – 2026年6月</div>
+                <div class="edu-content">
+                    <div class="edu-title">高中 · 理科</div>
+                    <div class="edu-meta">沭阳如东中学 · 宿迁沭阳</div>
+                    <div class="edu-desc">物理、数学成绩突出，多次获得“三好学生”称号。</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== CONTACT ===== -->
+        <section class="contact-section reveal" id="contact">
+            <h2 class="section-title">
+                <span class="material-icons">contact_mail</span> 联系方式
+            </h2>
+            <div class="contact-grid">
+                <a href="tencent://message/?uin=212089996" class="contact-item" target="_blank" rel="noopener">
+                    <span class="material-icons">chat</span>
+                    <div class="contact-info">
+                        <span class="contact-label">QQ</span>
+                        <span class="contact-value">212089996</span>
+                    </div>
+                </a>
+                <a href="#" class="contact-item" onclick="alert('微信号: Yemao20200303'); return false;">
+                    <span class="material-icons">sms</span>
+                    <div class="contact-info">
+                        <span class="contact-label">微信</span>
+                        <span class="contact-value">Yemao20200303</span>
+                    </div>
+                </a>
+                <a href="tel:15150747091" class="contact-item">
+                    <span class="material-icons">phone</span>
+                    <div class="contact-info">
+                        <span class="contact-label">手机</span>
+                        <span class="contact-value">15150747091</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- ===== FOOTER ===== -->
+        <div class="footer reveal">
+            © 2026 叶茂 · 来自宿迁沭阳 · 个人简历
+            <br style="display:block;margin-top:4px;" />
+            <span>✦</span> 用耐心雕琢细节，以热忱拥抱未来 <span>✦</span>
+        </div>
+
+    </div>
+    <!-- end container -->
+
+    <!-- ===== 粒子特效脚本 ===== -->
+    <script>
+        (function() {
+            'use strict';
+
+            const isMobile = window.innerWidth < 768 || ('ontouchstart' in window);
+            const INIT_PARTICLES = isMobile ? 350 : 1000;
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+
+            let W, H;
+
+            function resize() {
+                W = canvas.width = window.innerWidth;
+                H = canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            function project3D(x, y, z, vars) {
+                let p, d;
+                x -= vars.camX;
+                y -= vars.camY - 8;
+                z -= vars.camZ;
+                p = Math.atan2(x, z);
+                d = Math.sqrt(x * x + z * z);
+                x = Math.sin(p - vars.yaw) * d;
+                z = Math.cos(p - vars.yaw) * d;
+                p = Math.atan2(y, z);
+                d = Math.sqrt(y * y + z * z);
+                y = Math.sin(p - vars.pitch) * d;
+                z = Math.cos(p - vars.pitch) * d;
+                const rx1 = -1000,
+                    ry1 = 1,
+                    rx2 = 1000,
+                    ry2 = 1,
+                    rx3 = 0,
+                    ry3 = 0;
+                const rx4 = x,
+                    ry4 = z;
+                const uc = (ry4 - ry3) * (rx2 - rx1) - (rx4 - rx3) * (ry2 - ry1);
+                if (Math.abs(uc) < 1e-12) return { d: -1 };
+                const ua = ((rx4 - rx3) * (ry1 - ry3) - (ry4 - ry3) * (rx1 - rx3)) / uc;
+                const ub = ((rx2 - rx1) * (ry1 - ry3) - (ry2 - ry1) * (rx1 - rx3)) / uc;
+                if (!z) z = 0.000000001;
+                if (ua > 0 && ua < 1 && ub > 0 && ub < 1) {
+                    return {
+                        x: vars.cx + (rx1 + ua * (rx2 - rx1)) * vars.scale,
+                        y: vars.cy + y / z * vars.scale,
+                        d: (x * x + y * y + z * z)
+                    };
+                } else {
+                    return { d: -1 };
+                }
+            }
+
+            function elevation(x, y, z) {
+                const dist = Math.sqrt(x * x + y * y + z * z);
+                if (dist && z / dist >= -1 && z / dist <= 1) return Math.acos(z / dist);
+                return 0.00000001;
+            }
+
+            function rgb(col) {
+                col += 0.000001;
+                const r = Math.floor((0.7 + Math.sin(col) * 0.5) * 16);
+                const g = Math.floor((0.7 + Math.cos(col) * 0.5) * 16);
+                const b = Math.floor((0.7 - Math.sin(col) * 0.5) * 16);
+                return '#' + r.toString(16) + g.toString(16) + b.toString(16);
+            }
+
+            function interpolateColors(RGB1, RGB2, degree) {
+                const w2 = degree,
+                    w1 = 1 - w2;
+                return [
+                    w1 * RGB1[0] + w2 * RGB2[0],
+                    w1 * RGB1[1] + w2 * RGB2[1],
+                    w1 * RGB1[2] + w2 * RGB2[2]
+                ];
+            }
+
+            function rgbArray(col) {
+                col += 0.000001;
+                const r = Math.floor((0.7 + Math.sin(col) * 0.5) * 256);
+                const g = Math.floor((0.7 + Math.cos(col) * 0.5) * 256);
+                const b = Math.floor((0.7 - Math.sin(col) * 0.5) * 256);
+                return [r, g, b];
+            }
+
+            function colorString(arr) {
+                const r = Math.floor(arr[0]),
+                    g = Math.floor(arr[1]),
+                    b = Math.floor(arr[2]);
+                return '#' +
+                    ('0' + r.toString(16)).slice(-2) +
+                    ('0' + g.toString(16)).slice(-2) +
+                    ('0' + b.toString(16)).slice(-2);
+            }
+
+            function spawnParticle(vars) {
+                const p = Math.PI * 2 * Math.random();
+                const ls = Math.sqrt(Math.random() * vars.distributionRadius);
+                const pt = {};
+                pt.x = Math.sin(p) * ls;
+                pt.y = -vars.vortexHeight / 2;
+                pt.vy = vars.initV / 20 + Math.random() * vars.initV;
+                pt.z = Math.cos(p) * ls;
+                pt.radius = 400 + 1200 * Math.random();
+                pt.color = pt.radius / 1000 + vars.frameNo / 250;
+                vars.points.push(pt);
+            }
+
+            function sortFunction(a, b) {
+                return b.dist - a.dist;
+            }
+
+            function frame(vars) {
+                if (!vars) {
+                    vars = {
+                        canvas: canvas,
+                        ctx: ctx,
+                        frameNo: 0,
+                        camX: 0,
+                        camY: 0,
+                        camZ: -14,
+                        pitch: 0,
+                        yaw: 0,
+                        cx: W / 2,
+                        cy: H / 2,
+                        scale: 500,
+                        floor: 26.5,
+                        points: [],
+                        initParticles: INIT_PARTICLES,
+                        initV: 0.01,
+                        distributionRadius: 800,
+                        vortexHeight: 25,
+                    };
+                    vars.pitch = elevation(vars.camX, vars.camZ, vars.camY) - Math.PI / 2;
+                    for (let i = 0; i < INIT_PARTICLES; i++) spawnParticle(vars);
+                }
+
+                vars.frameNo++;
+                vars.cx = W / 2;
+                vars.cy = H / 2;
+
+                let p = Math.atan2(vars.camX, vars.camZ);
+                let d = Math.sqrt(vars.camX * vars.camX + vars.camZ * vars.camZ);
+                d -= Math.sin(vars.frameNo / 80) / 25;
+                const t = Math.cos(vars.frameNo / 300) / 165;
+                vars.camX = Math.sin(p + t) * d;
+                vars.camZ = Math.cos(p + t) * d;
+                vars.camY = -Math.sin(vars.frameNo / 220) * 15;
+                vars.yaw = Math.PI + p + t;
+                vars.pitch = elevation(vars.camX, vars.camZ, vars.camY) - Math.PI / 2;
+
+                for (let i = vars.points.length - 1; i >= 0; i--) {
+                    const pt = vars.points[i];
+                    let x = pt.x,
+                        y = pt.y,
+                        z = pt.z;
+                    const dist = Math.sqrt(x * x + z * z) / 1.0075;
+                    const angleStep = 0.1 / (1 + dist * dist / 5);
+                    const angle = Math.atan2(x, z) + angleStep;
+                    pt.x = Math.sin(angle) * dist;
+                    pt.z = Math.cos(angle) * dist;
+                    pt.y += pt.vy * angleStep * ((Math.sqrt(vars.distributionRadius) - dist) * 2);
+                    if (pt.y > vars.vortexHeight / 2 || dist < 0.25) {
+                        vars.points.splice(i, 1);
+                        spawnParticle(vars);
+                    }
+                }
+
+                while (vars.points.length < INIT_PARTICLES) {
+                    spawnParticle(vars);
+                }
+
+                ctx.globalAlpha = 0.12;
+                ctx.fillStyle = '#000';
+                ctx.fillRect(0, 0, W, H);
+
+                drawFloor(vars);
+
+                for (let i = 0; i < vars.points.length; i++) {
+                    const pt = vars.points[i];
+                    const point = project3D(pt.x, pt.y, pt.z, vars);
+                    if (point.d !== -1) {
+                        pt.dist = point.d;
+                        const size = 3 + pt.radius / (1 + point.d) * 0.6;
+                        const heightRatio = Math.abs(pt.y);
+                        let alpha = 0.9 - Math.pow(heightRatio / (vars.vortexHeight / 2), 1000) * 0.7;
+                        alpha = Math.max(0, Math.min(1, alpha));
+                        ctx.globalAlpha = alpha;
+                        ctx.fillStyle = rgb(pt.color);
+                        if (point.x > -1 && point.x < W && point.y > -1 && point.y < H) {
+                            ctx.fillRect(point.x - size / 2, point.y - size / 2, size, size);
+                        }
+                    }
+                }
+
+                vars.points.sort(sortFunction);
+
+                requestAnimationFrame(() => frame(vars));
+            }
+
+            function drawFloor(vars) {
+                const cx = vars.cx,
+                    cy = vars.cy,
+                    scale = vars.scale;
+                let x, y, z, d, point, size, a;
+
+                for (let i = -25; i <= 25; i += 1) {
+                    for (let j = -25; j <= 25; j += 1) {
+                        x = i * 2;
+                        z = j * 2;
+                        y = vars.floor;
+                        d = Math.sqrt(x * x + z * z);
+                        point = project3D(x, y - d * d / 85, z, vars);
+                        if (point.d !== -1) {
+                            size = 1 + 15000 / (1 + point.d);
+                            a = 0.25 - Math.pow(d / 50, 4) * 0.2;
+                            if (a > 0) {
+                                const col1 = rgbArray(d / 26 - vars.frameNo / 40);
+                                const col2 = [0, 128, 32];
+                                const mix = 0.5 + Math.sin(d / 6 - vars.frameNo / 8) / 2;
+                                ctx.fillStyle = colorString(interpolateColors(col1, col2, mix));
+                                ctx.globalAlpha = a;
+                                ctx.fillRect(point.x - size / 2, point.y - size / 2, size, size);
+                            }
+                        }
+                    }
+                }
+
+                for (let i = -25; i <= 25; i += 1) {
+                    for (let j = -25; j <= 25; j += 1) {
+                        x = i * 2;
+                        z = j * 2;
+                        y = -vars.floor;
+                        d = Math.sqrt(x * x + z * z);
+                        point = project3D(x, y + d * d / 85, z, vars);
+                        if (point.d !== -1) {
+                            size = 1 + 15000 / (1 + point.d);
+                            a = 0.25 - Math.pow(d / 50, 4) * 0.2;
+                            if (a > 0) {
+                                const col1 = rgbArray(-d / 26 - vars.frameNo / 40);
+                                const col2 = [32, 0, 128];
+                                const mix = 0.5 + Math.sin(-d / 6 - vars.frameNo / 8) / 2;
+                                ctx.fillStyle = colorString(interpolateColors(col1, col2, mix));
+                                ctx.globalAlpha = a;
+                                ctx.fillRect(point.x - size / 2, point.y - size / 2, size, size);
+                            }
+                        }
+                    }
+                }
+                ctx.globalAlpha = 1;
+            }
+
+            frame();
+
+            window.addEventListener('resize', () => {});
+
+        })();
+
+        // ===== 滚动进入动画 =====
+        (function() {
+            const reveals = document.querySelectorAll('.reveal');
+            if (reveals.length === 0) return;
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -40px 0px'
+            });
+
+            reveals.forEach(el => observer.observe(el));
+
+            setTimeout(() => {
+                reveals.forEach(el => {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top < window.innerHeight) {
+                        el.classList.add('visible');
+                    }
+                });
+            }, 200);
+        })();
+    </script>
+
+</body>
+</html>
